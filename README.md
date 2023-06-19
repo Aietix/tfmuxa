@@ -14,21 +14,31 @@ docker build -t tfmuxa .
 ```
 
 ### Using the Docker Image ### 
-This Docker image (aietix/tfmuxa) is built specifically for Apple Silicon CPU arch
+**This Docker image (aietix/tfmuxa) is built specifically for Apple Silicon CPU arch**
+<br>
+<br>
+**Option 1:**  Running in the Current Directory by Providing 'start' as an Argument
+```
+docker run -v $(pwd):/workspace aietix/tfmuxa start
+```
+This will run the scan in the current directory.
+<br>
+<br>
 
-**Option 1:** Running with a Mounted Workspace Directory
+**Option 2:** Running shell with a Mounted Workspace Directory
 
 ```
 docker run -v $(pwd):/workspace -it aietix/tfmuxa sh
 ```
-
 Once inside the shell, you can type **start** to automatically start scanning.  
 <br>
-**Option 2:** Running with a Specified GitHub Repository  
+<br>
+**Option 3:** Running with a Specified GitHub Repository  
 ```
 docker run aietix/tfmuxa https://github.com/Aietix/ec2-muxa.git
 ```
-
+<br>
+<br>
 
 ### Resources ###  
 **TFLint** - Terraform Linter: https://github.com/terraform-linters/tflint  
