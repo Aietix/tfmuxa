@@ -45,9 +45,9 @@ if [ "$1" == "sh" ]; then
 elif [[ "$1" == http://* || "$1" == https://* ]]; then
     # Clone the git repository into a directory named 'repo'
     git clone "$1" repo
-    scan
     # Navigate to the 'repo' directory
     cd repo || { echo "Failed to change to the 'repo' directory"; exit 1; }
+    scan
 # If the argument is a start, start the scan process
 elif [[ "$1" == "start" ]]; then
     scan
