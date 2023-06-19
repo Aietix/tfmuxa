@@ -8,7 +8,6 @@ echo "  docker run aietix/tfmuxa <git-repo-url> - For automatic clone and run sc
 echo ""
 
 scan() {
-    # Run TFLint on the cloned repository
     echo "===================================================="
     echo "================= Running TFLint ==================="
     echo "===================================================="
@@ -16,7 +15,6 @@ scan() {
     tflint --chdir .
     echo ""
 
-    # Run TFSec on the cloned repository
     echo "===================================================="
     echo "================= Running TFSec ===================="
     echo "===================================================="
@@ -24,7 +22,6 @@ scan() {
     tfsec .
     echo ""
 
-    # Run Terrascan on the cloned repository
     echo "===================================================="
     echo "=============== Running Terrascan =================="
     echo "===================================================="
@@ -51,11 +48,11 @@ elif [[ "$1" == http://* || "$1" == https://* ]]; then
     scan
     # Navigate to the 'repo' directory
     cd repo || { echo "Failed to change to the 'repo' directory"; exit 1; }
-# If the argument is a URL, clone the git repository and navigate to the 'repo' directory
+# If the argument is a start, start the scan process
 elif [[ "$1" == "start" ]]; then
     scan
 else
-    echo "Invalid argument. Please provide 'sh' or a git repository URL."
+    echo "Invalid argument. Please provide start, sh or git repository URL."
     exit 1
 fi
 
