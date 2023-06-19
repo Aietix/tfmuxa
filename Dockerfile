@@ -36,14 +36,12 @@ COPY --from=builder /usr/local/bin/terrascan /usr/local/bin/terrascan
 
 # Copy entrypoint script
 COPY entrypoint.sh /opt/entrypoint.sh
-COPY start.sh /opt/start.sh
 
-# Create a symlink to start.sh as 'start'
-RUN ln -s /opt/start.sh /usr/local/bin/start
+# Create an alias
+RUN echo "alias start='/opt/entrypoint.sh start'" >> ~/.bashrc
 
 # Set execute permissions for the entrypoint script
 RUN chmod +x /opt/entrypoint.sh
-RUN chmod +x /opt/start.sh 
     
 # Set the entrypoint script to run when the container starts
 ENTRYPOINT [ "/opt/entrypoint.sh" ]
