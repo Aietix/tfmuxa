@@ -1,4 +1,4 @@
-# Stage 1: Build stage using Ubuntu image
+# Stage 1: Build stage using Alpine image
 FROM alpine:3 AS builder
 
 # Install essential tools
@@ -31,7 +31,7 @@ RUN wget -O terrascan.tar.gz https://github.com/tenable/terrascan/releases/downl
     && install terrascan /usr/local/bin && rm terrascan
 
 
-# Stage 2: Main image based on Ubuntu
+# Stage 2: Main image based on Alpine
 FROM alpine:3 AS main
 
 # Install essential tools
