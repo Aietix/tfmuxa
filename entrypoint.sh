@@ -1,12 +1,5 @@
 #!/bin/sh
 
-# Display usage information
-echo "Usage:"
-echo "  docker run aietix/tfmuxa start - For starting the scan in the current directory"
-echo "  docker run -it aietix/tfmuxa sh - For shell mode (with an argument 'sh')"
-echo "  docker run aietix/tfmuxa <git-repo-url> - For automatic clone and run scan (with git-repo-url as an argument)"
-echo ""
-
 scan() {
     echo "===================================================="
     echo "================= Running TFLint ==================="
@@ -47,7 +40,11 @@ elif [[ "$1" == http://* || "$1" == https://* ]]; then
     cd repo || { echo "Failed to change to the 'repo' directory"; exit 1; }
     scan
 else
-    echo "Invalid argument. Please provide start, sh or git repository URL."
+    # Display usage information
+    echo "Invalid argument."
+    echo "docker run aietix/tfmuxa - For starting the scan in the current directory"
+    echo "docker run -it aietix/tfmuxa sh - For shell mode)"
+    echo "docker run aietix/tfmuxa <git-repo-url> - For automatic clone and run scan"
     exit 1
 fi
 
