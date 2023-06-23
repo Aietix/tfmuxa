@@ -2,24 +2,17 @@
 This Dockerfile creates a Docker image based on Alpine.  
 It installs **TFLint**, **TFSec**, and **Terrascan**; these are utilities for **linting and security** scanning Terraform code.
   
-  
-### Prerequisites ###      
-Docker installed on your machine.    
+**This Docker image, aietix/tfmuxa, is made for ARM architecture, but with this Dockerfile, you can easily rebuild it for other Unix-like systems with different architectures if needed.**
 
-
-### Building the Docker Image# ## 
+### Building the Docker Image# ###
 Navigate to the directory containing the Dockerfile and run:
 ```
 docker build -t tfmuxa .
 ```
-
-### Using the Docker Image ### 
-**This Docker image (aietix/tfmuxa) is built specifically for Apple Silicon CPU arch**
-<br>
-<br>
-**Option 1:**  Running in the Current Directory by Providing 'start' as an Argument
+### Usage: ### 
+**Option 1:** 
 ```
-docker run -v $(pwd):/workspace aietix/tfmuxa start
+docker run -v $(pwd):/workspace aietix/tfmuxa
 ```
 This will run the scan in the current directory.
 <br>
@@ -31,7 +24,7 @@ This will run the scan in the current directory.
 docker run -v $(pwd):/workspace -it aietix/tfmuxa sh
 ```
 <br>
-<br>
+
 **Option 3:** Running with a Specified GitHub Repository  
 ```
 docker run aietix/tfmuxa https://github.com/Aietix/ec2-muxa.git
