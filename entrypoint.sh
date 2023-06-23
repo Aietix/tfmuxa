@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Display usage information
 echo "Usage:"
@@ -39,7 +39,7 @@ fi
 # If the argument is 'sh', run the shell
 if [ "$1" == "sh" ]; then
     echo "Initiating shell..."
-    /bin/bash -i
+    /bin/sh -i
     
 # If the argument is a URL, clone the git repository and navigate to the 'repo' directory
 elif [[ "$1" == http://* || "$1" == https://* ]]; then

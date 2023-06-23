@@ -1,5 +1,5 @@
 # 🌳 - tfmuxa # 
-This Dockerfile creates a Docker image based on Ubuntu.  
+This Dockerfile creates a Docker image based on Alpine.  
 It installs **TFLint**, **TFSec**, and **Terrascan**; these are utilities for **linting and security** scanning Terraform code.
   
   
@@ -30,7 +30,6 @@ This will run the scan in the current directory.
 ```
 docker run -v $(pwd):/workspace -it aietix/tfmuxa sh
 ```
-Once inside the shell, you can type **start** to automatically start scanning.  
 <br>
 <br>
 **Option 3:** Running with a Specified GitHub Repository  

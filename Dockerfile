@@ -1,30 +1,41 @@
 # Stage 1: Build stage using Ubuntu image
-FROM ubuntu:latest AS builder
+FROM alpine:3 AS builder
 
-# Install necessary dependencies
-RUN apt-get update && apt-get install -y curl tar jq unzip
+# Install essential tools
+RUN apk add --no-cache curl tar unzip wget
+
+# Get target OS and architecture
+ARG TARGETOS TARGETARCH
+
+# Set versions
+ARG TFLINT_VERSION=0.47.0
+ARG TFSEC_VERSION=1.28.1
+ARG TERRASCAN_VERSION=1.18.1
+
+# Set working directory
+WORKDIR /tmp
 
 # Install TFLint
-RUN curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
+RUN wget -O tflint.zip https://github.com/terraform-linters/tflint/releases/download/v"${TFLINT_VERSION}"/tflint_"${TARGETOS}"_"${TARGETARCH}".zip \
+    && unzip tflint.zip -d /usr/local/bin \
+    && rm tflint.zip
 
 # Install TFSec
-RUN curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
+RUN wget -O /usr/local/bin/tfsec https://github.com/aquasecurity/tfsec/releases/download/v"${TFSEC_VERSION}"/tfsec-"${TARGETOS}"-"${TARGETARCH}" \
+    && chmod +x /usr/local/bin/tfsec
 
 # Install Terrascan
-RUN curl -L "$(curl -s https://api.github.com/repos/tenable/terrascan/releases/latest | jq -r '.assets[] | select(.name | test("_Linux_x86_64.tar.gz")) | .browser_download_url')" > terrascan.tar.gz \
-    && tar -xf terrascan.tar.gz terrascan \
-    && rm terrascan.tar.gz \
-    && install terrascan /usr/local/bin \
-    && rm terrascan \
-    && rm -rf /var/lib/apt/lists/*
+# Convert the first letter of ${TARGETOS} to uppercase
+RUN wget -O terrascan.tar.gz https://github.com/tenable/terrascan/releases/download/v"${TERRASCAN_VERSION}"/terrascan_"${TERRASCAN_VERSION}"_"$(echo ${TARGETOS} | awk '{print toupper(substr($0,1,1)) tolower(substr($0,2))}')"_"${TARGETARCH}".tar.gz \
+    && tar -xf terrascan.tar.gz terrascan && rm terrascan.tar.gz \
+    && install terrascan /usr/local/bin && rm terrascan
 
 
 # Stage 2: Main image based on Ubuntu
-FROM ubuntu:latest
+FROM alpine:3 AS main
 
-# Install git
-RUN apt-get update && apt-get install -y git \
-    && rm -rf /var/lib/apt/lists/*
+# Install essential tools
+RUN apk add --no-cache git
 
 # Set working directory
 WORKDIR /workspace
@@ -37,11 +48,8 @@ COPY --from=builder /usr/local/bin/terrascan /usr/local/bin/terrascan
 # Copy entrypoint script
 COPY entrypoint.sh /opt/entrypoint.sh
 
-# Create an alias
-RUN echo "alias start='/opt/entrypoint.sh start'" >> ~/.bashrc
-
 # Set execute permissions for the entrypoint script
 RUN chmod +x /opt/entrypoint.sh
-    
+
 # Set the entrypoint script to run when the container starts
 ENTRYPOINT [ "/opt/entrypoint.sh" ]
