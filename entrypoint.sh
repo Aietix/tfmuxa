@@ -31,25 +31,20 @@ scan() {
     echo ""
 }
 
-# If no argument is provided, the script will do nothing and exit
+# If no argument is provided, start scannig.
 if [ "$#" -ne 1 ]; then
-    exit 0
+    scan
 fi
-
 # If the argument is 'sh', run the shell
 if [ "$1" == "sh" ]; then
     echo "Initiating shell..."
     /bin/sh -i
-    
 # If the argument is a URL, clone the git repository and navigate to the 'repo' directory
 elif [[ "$1" == http://* || "$1" == https://* ]]; then
     # Clone the git repository into a directory named 'repo'
     git clone "$1" repo
     # Navigate to the 'repo' directory
     cd repo || { echo "Failed to change to the 'repo' directory"; exit 1; }
-    scan
-# If the argument is a start, start the scan process
-elif [[ "$1" == "start" ]]; then
     scan
 else
     echo "Invalid argument. Please provide start, sh or git repository URL."
